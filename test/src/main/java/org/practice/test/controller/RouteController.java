@@ -1,5 +1,7 @@
 package org.practice.test.controller;
 
+import java.util.List;
+
 import org.practice.test.model.User;
 import org.practice.test.repository.AddUserRepo;
 import org.practice.test.services.AddUserService;
@@ -34,6 +36,13 @@ public class RouteController {
         userService.addUser(user);
 
         return ResponseEntity.ok().build();
-        }
+    }
+        
+    @GetMapping("/allUser")
+    public ResponseEntity<List<User>> getAllUser() {
+        List<User> users = userRepo.findAll();
+        return ResponseEntity.ok(users);
+    }
+
     
 }
