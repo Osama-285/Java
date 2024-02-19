@@ -3,8 +3,10 @@ package org.practice.test.config;
 import java.io.IOException;
 import java.util.Optional;
 
+import org.practice.test.util.JwtUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -38,7 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
               
                 var authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,
                         userDetails.getAuthorities());
-                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         });
 
