@@ -12,11 +12,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class JwtUtils {
+    private JwtUtils() {
+        
+    }
     private static final SecretKey secretKey = Jwts.SIG.HS256.key().build();
 
     public static boolean validateToken(String jwtToken) {
 
-        return parseToken(jwtToken) != null;
+        return parseToken(jwtToken).isPresent();
     }
 
     private static Optional<Claims> parseToken(String jwtToken) {

@@ -21,6 +21,12 @@ public class WebSecurityConfig {
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final JwtAuthenticationFilter JwtAuthenticationFilter;
 
+    public WebSecurityConfig(AuthenticationEntryPoint authenticationEntryPoint,
+            org.practice.test.config.JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        JwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+
     private static final String[] WHITELIST = {
             "/",
             "/addInfo",
