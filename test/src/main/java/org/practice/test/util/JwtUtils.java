@@ -1,6 +1,7 @@
 package org.practice.test.util;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -16,7 +17,7 @@ public class JwtUtils {
         
     }
     private static final SecretKey secretKey = Jwts.SIG.HS256.key().build();
-
+    private static final String ISSUER = "Osama";
     public static boolean validateToken(String jwtToken) {
 
         return parseToken(jwtToken).isPresent();
@@ -42,5 +43,10 @@ public class JwtUtils {
 
         return claimsOptional.map(Claims::getSubject);
 
+    }
+
+    public static String generateToken(String username) {
+        
+        Jwts.builder().id(UUID.randomUUID().toString()).issuer(ISSUER);
     }
 }
