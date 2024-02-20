@@ -24,8 +24,14 @@ public class AuthController {
     }
     @PostMapping("/signup")
     public ResponseEntity<AuthResponseDto> signup(@RequestBody AuthRequestDto authRequestDto) {
-            var jwtToken = authService.signup(authRequestDto.name(),authRequestDto.username(), authRequestDto.password());
-     var authResponseDto = new AuthResponseDto(jwtToken, AuthStatus.USER_CREATED_SUCCESSFULLY);
-     return ResponseEntity.status(HttpStatus.OK).body(authResponseDto);
+            try {
+                var jwtToken = authService.signup(authRequestDto.name(),authRequestDto.username(), authRequestDto.password());
+    var authResponseDto = new AuthResponseDto(jwtToken, AuthStatus.USER_CREATED_SUCCESSFULLY);
+    return ResponseEntity.status(HttpStatus.OK).body(authResponseDto);
+            } catch (Exception e) {
+              
+                var authResponseDto = new AuthResponseDto(null, AuthStatus.USER_NOT_CREATED);
+               return ResponseEntity.status(HttpStatus.CONFLICT).body(authResponseDto);
+            }
     }
 }
