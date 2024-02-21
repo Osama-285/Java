@@ -2,6 +2,8 @@ package org.authentication.Auth.service;
 
 import java.util.ArrayList;
 
+import org.authentication.Auth.model.AppUser;
+import org.authentication.Auth.repo.AppUserRepo;
 import org.authentication.Auth.utils.JwtUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

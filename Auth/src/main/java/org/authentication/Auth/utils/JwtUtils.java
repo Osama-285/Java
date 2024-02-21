@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -18,7 +20,7 @@ private JwtUtils() {
         
     }
     private static final SecretKey secretKey = Jwts.SIG.HS256.key().build();
-    private static final String ISSUER = "Testing_123_123332323232";
+    private static final String ISSUER = "Testing_ABC_ASDEADa";
     public static boolean validateToken(String jwtToken) {
 
         return parseToken(jwtToken).isPresent();
@@ -46,13 +48,15 @@ private JwtUtils() {
 
     }
 
-    // public static String generateToken(String username) {
+    
 
-    //     var currentDate = new Date();
-    //     var jwtExpirationMinutes = 10;
-    //   var expiration = DateUtils.addMinutes(currentDate, jwtExpirationMinutes);
+    public static String generateToken(String username) {
+
+        var currentDate = new Date();
+        var jwtExpirationMinutes = 10;
+      var expiration = DateUtils.addMinutes(currentDate, jwtExpirationMinutes);
         
-    //    return Jwts.builder().id(UUID.randomUUID().toString()).issuer(ISSUER).subject(username).signWith(secretKey).issuedAt(currentDate).expiration(expiration).compact();
-    // }
+       return Jwts.builder().id(UUID.randomUUID().toString()).issuer(ISSUER).subject(username).signWith(secretKey).issuedAt(currentDate).expiration(expiration).compact();
+    }
     
 }
