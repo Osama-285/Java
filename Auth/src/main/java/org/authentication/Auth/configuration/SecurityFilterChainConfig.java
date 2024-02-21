@@ -12,15 +12,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityFilterChainConfig {
     private final AuthenticationEntryPoint authenticationEntryPoint;
-     private final JwtAuthenticationFilter JwtAuthenticationFilter;
-    // private final JwtAuthenticationFilter JwtAuthenticationFilter;
+     private final JwtAuthenticationFilter JwtAuthenticationFilter; 
     
-    public SecurityFilterChainConfig(AuthenticationEntryPoint authenticationEntryPoint) {
+
+    public SecurityFilterChainConfig(AuthenticationEntryPoint authenticationEntryPoint,
+            org.authentication.Auth.configuration.JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.authenticationEntryPoint = authenticationEntryPoint;
+        JwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
+
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
            httpSecurity.cors(AbstractHttpConfigurer::disable); 
 
        httpSecurity.csrf(AbstractHttpConfigurer::disable);
@@ -36,7 +40,7 @@ public class SecurityFilterChainConfig {
 
         
         httpSecurity.addFilterBefore(JwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-         httpSecurity.build(); 
+         return httpSecurity.build(); 
     }
     }
 
