@@ -1,6 +1,6 @@
 package org.practice.test.model;
+import java.util.List;
 
-import org.hibernate.mapping.List;
 import org.springframework.security.core.GrantedAuthority;
 
 import jakarta.persistence.Column;
@@ -11,12 +11,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Entity
+@Data
 @Getter
 @Setter
 @Builder
@@ -37,6 +39,8 @@ public class AppUser {
     
     @Column(nullable = false, unique = true)
     private String password;
+    @Column(nullable = false)
+    private List<GrantedAuthority> authorities;
 
     // private List<GrantedAuthority> authorities;
     // public AppUser(Long id, String name, String username, String password) {
