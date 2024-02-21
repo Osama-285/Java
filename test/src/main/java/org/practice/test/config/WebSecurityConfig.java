@@ -1,6 +1,5 @@
 package org.practice.test.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,7 +7,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -28,19 +26,20 @@ public class WebSecurityConfig {
     }
 
     private static final String[] WHITELIST = {
-            "/",
-            "/addInfo",
-        "/allUser"
+        //     "/",
+        //     "/addInfo",
+        // "/allUser"
+        // "/api/auth/login/**","/api/auth/sign-up/**"
     };
 
     @Bean
-    SecurityFilterChain web(HttpSecurity http) throws Exception {
+   public SecurityFilterChain web(HttpSecurity http) throws Exception {
 
         http.cors(AbstractHttpConfigurer::disable); 
 
        http.csrf(AbstractHttpConfigurer::disable);
-		http.authorizeHttpRequests((authorize) -> authorize
-			.requestMatchers(WHITELIST).permitAll()
+		http.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/api/auth/login/**").permitAll()
+			.requestMatchers("/api/auth/sign-up/**").permitAll()
 			
         );
             

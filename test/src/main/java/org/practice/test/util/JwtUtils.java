@@ -8,7 +8,7 @@ import javax.crypto.SecretKey;
 
 import org.springframework.security.oauth2.jwt.JwtException;
 
-import com.nimbusds.jwt.util.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -20,7 +20,7 @@ public class JwtUtils {
         
     }
     private static final SecretKey secretKey = Jwts.SIG.HS256.key().build();
-    private static final String ISSUER = "Testing_123";
+    private static final String ISSUER = "Testing_123_123332323232";
     public static boolean validateToken(String jwtToken) {
 
         return parseToken(jwtToken).isPresent();
@@ -51,8 +51,9 @@ public class JwtUtils {
     public static String generateToken(String username) {
 
         var currentDate = new Date();
-        DateUtils.toSecondsSinceEpoch(currentDate);
+        var jwtExpirationMinutes = 10;
+      var expiration = DateUtils.addMinutes(currentDate, jwtExpirationMinutes);
         
-       return Jwts.builder().id(UUID.randomUUID().toString()).issuer(ISSUER).subject(username).signWith(secretKey).issuedAt(currentDate).expiration(null).compact();
+       return Jwts.builder().id(UUID.randomUUID().toString()).issuer(ISSUER).subject(username).signWith(secretKey).issuedAt(currentDate).expiration(expiration).compact();
     }
 }
