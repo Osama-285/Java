@@ -10,7 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.practice.test.config.JwtAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -20,7 +20,7 @@ public class WebSecurityConfig {
     private final JwtAuthenticationFilter JwtAuthenticationFilter;
 
     public WebSecurityConfig(AuthenticationEntryPoint authenticationEntryPoint,
-            org.practice.test.config.JwtAuthenticationFilter jwtAuthenticationFilter) {
+           JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.authenticationEntryPoint = authenticationEntryPoint;
         JwtAuthenticationFilter = jwtAuthenticationFilter;
     }
