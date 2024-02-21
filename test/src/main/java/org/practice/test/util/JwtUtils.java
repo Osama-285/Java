@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.jwt.JwtException;
 import com.nimbusds.jwt.util.DateUtils;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 
