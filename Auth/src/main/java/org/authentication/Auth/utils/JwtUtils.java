@@ -30,7 +30,7 @@ private JwtUtils() {
 
         var jwtParser = Jwts.parser().verifyWith(secretKey).build();
         System.out.println("SECRETTTETETET" + jwtParser);
-        // System.out.println("TOKENNNNNNN"+jwtToken);
+        System.out.println("TOKENNNNNNN"+jwtToken);
         // System.out.println("PARSERRRRRRRRR"+jwtParser.parseSignedClaims(jwtToken));
 
         try {
