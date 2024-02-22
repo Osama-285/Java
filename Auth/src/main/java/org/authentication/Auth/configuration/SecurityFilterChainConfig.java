@@ -8,7 +8,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.authentication.Auth.configuration.JwtAuthenticationFilter;
 @Configuration
 public class SecurityFilterChainConfig {
     private final AuthenticationEntryPoint authenticationEntryPoint;
@@ -16,9 +16,9 @@ public class SecurityFilterChainConfig {
     
 
     public SecurityFilterChainConfig(AuthenticationEntryPoint authenticationEntryPoint,
-            org.authentication.Auth.configuration.JwtAuthenticationFilter jwtAuthenticationFilter) {
+            JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.authenticationEntryPoint = authenticationEntryPoint;
-        JwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.JwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
 

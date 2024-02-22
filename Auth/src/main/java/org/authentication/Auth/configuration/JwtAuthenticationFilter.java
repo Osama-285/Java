@@ -28,7 +28,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+            throws ServletException, IOException, java.io.IOException {
+                System.out.println("USERDETAILSSSSSSS"+request);
         var jwtTokenOptional = getTokenFromRequest(request);
 
         jwtTokenOptional.ifPresent(jwtToken -> {
@@ -49,15 +50,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         });
 
-        try {
+        
             filterChain.doFilter(request, response);
-        } catch (java.io.IOException e) {
-            
-            e.printStackTrace();
-        } catch (ServletException e) {
-            
-            e.printStackTrace();
-        }
+       
     }
 
     private Optional<String> getTokenFromRequest(HttpServletRequest request) {

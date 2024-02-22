@@ -22,14 +22,17 @@ public class AuthController {
      var authResponseDto = new AuthResponseDto(jwtToken, AuthStatus.LOGIN_SUCCESS);
      return ResponseEntity.status(HttpStatus.OK).body(authResponseDto);
     }
-    @PostMapping("/signup")
+    @PostMapping("/sign-up")
     public ResponseEntity<AuthResponseDto> signup(@RequestBody AuthRequestDto authRequestDto) {
-            try {
-                var jwtToken = authService.signup(authRequestDto.name(),authRequestDto.username(), authRequestDto.password());
-    var authResponseDto = new AuthResponseDto(jwtToken, AuthStatus.USER_CREATED_SUCCESSFULLY);
+        try {
+                System.out.println("TESSSSSSTTTTSAFSDASDASDADASDas"+authRequestDto);
+                var jwtToken = authService.signup(authRequestDto.name(), authRequestDto.username(),
+                        authRequestDto.password());
+                System.out.println("TOKENN"+jwtToken);
+                var authResponseDto = new AuthResponseDto(jwtToken, AuthStatus.USER_CREATED_SUCCESSFULLY);
     return ResponseEntity.status(HttpStatus.OK).body(authResponseDto);
             } catch (Exception e) {
-              
+              System.out.println("ERROR"+e);
                 var authResponseDto = new AuthResponseDto(null, AuthStatus.USER_NOT_CREATED);
                return ResponseEntity.status(HttpStatus.CONFLICT).body(authResponseDto);
             }

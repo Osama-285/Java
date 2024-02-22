@@ -22,18 +22,21 @@ private JwtUtils() {
     private static final SecretKey secretKey = Jwts.SIG.HS256.key().build();
     private static final String ISSUER = "Testing_ABC_ASDEADa";
     public static boolean validateToken(String jwtToken) {
-
+        // System.out.println("VALIDATETOKEN"+jwtToken);
         return parseToken(jwtToken).isPresent();
     }
 
     private static Optional<Claims> parseToken(String jwtToken) {
 
         var jwtParser = Jwts.parser().verifyWith(secretKey).build();
+        System.out.println("SECRETTTETETET" + jwtParser);
+        // System.out.println("TOKENNNNNNN"+jwtToken);
+        // System.out.println("PARSERRRRRRRRR"+jwtParser.parseSignedClaims(jwtToken));
 
         try {
             return Optional.of(jwtParser.parseSignedClaims(jwtToken).getPayload());
         } catch (JwtException e) {
-            log.error("JWT Exception Occured");
+            log.error("JWT Exception Occured"+ e);
 
         }
         return Optional.empty();
@@ -41,7 +44,7 @@ private JwtUtils() {
     }
 
     public static Optional<String> getUsernameFromToken(String jwtToken) {
-
+System.out.println("getUsernameFromToken"+jwtToken);
         var claimsOptional = parseToken(jwtToken);
 
         return claimsOptional.map(Claims::getSubject);
