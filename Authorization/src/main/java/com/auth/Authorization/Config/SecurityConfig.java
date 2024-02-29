@@ -1,5 +1,6 @@
 package com.auth.Authorization.Config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -23,28 +24,24 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final UserInfoService userInfoService;
 
-    @Order(1)
+    @Autowired
+    UserInfoService userInfoService;
+
+   
+    
     @Bean
     public SecurityFilterChain webSecurity(HttpSecurity httpSecurity) throws Exception {
+        System.out.println("userINFO"+httpSecurity);
         return httpSecurity.securityMatcher(new AntPathRequestMatcher("/api/**")).csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated()).userDetailsService(userInfoService)
+                .authorizeHttpRequests(auth -> auth.anyRequest()
+                        .authenticated()).userDetailsService(userInfoService)
 
                 .build();
     }
-     @Order(2)
+
 @Bean
 public SecurityFilterChain web(HttpSecurity httpSecurity) throws Exception {
-        
-    httpSecurity.csrf(AbstractHttpConfigurer::disable);
-		httpSecurity.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/api/auth/login/**").permitAll()
-			.requestMatchers("/api/auth/sign-up/**").permitAll()
-			
-        );
-        // httpSecurity.exceptionHandling(
-        //            exceptionHandling -> exceptionHandling.authenticationEntryPoint(authenticationEntryPoint));
-           
         httpSecurity.sessionManagement(
                 sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
            return httpSecurity.build();
