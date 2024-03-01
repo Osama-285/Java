@@ -1,6 +1,7 @@
 package com.auth.Authorization.Service;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,9 +10,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.auth.Authorization.Components.UserInfoMapper;
 import com.auth.Authorization.DTO.AuthResponseDto;
 // import com.auth.Authorization.DTO.AuthResponseDto;
 import com.auth.Authorization.DTO.TokenType;
+import com.auth.Authorization.DTO.UserRegistrationDto;
 import com.auth.Authorization.Model.RefreshTokenEntity;
 import com.auth.Authorization.Model.UserInfo;
 import com.auth.Authorization.Repository.RefreshTokenRepo;
@@ -29,7 +32,8 @@ import lombok.extern.slf4j.Slf4j;
  
      private final UserInfoRepo userInfoRepo;
      private final JwtTokenGenerator jwtTokenGenerator;
-    private final RefreshTokenRepo refreshTokenRepo;
+     private final RefreshTokenRepo refreshTokenRepo;
+    private final UserInfoMapper userInfoMapper;
      public AuthResponseDto getJwtTokensAfterAuthentication(Authentication authentication, HttpServletResponse response) {
          try {
              var userInfoEntity = userInfoRepo.findByEmailId(authentication.getName())
@@ -106,19 +110,58 @@ import lombok.extern.slf4j.Slf4j;
                  .build();
      }
     
-          private static Authentication createAuthenticationObject(UserInfo userInfoEntity) {
+     private static Authentication createAuthenticationObject(UserInfo userInfoEntity) {
          // Extract user details from UserDetailsEntity
          String username = userInfoEntity.getEmailId();
          String password = userInfoEntity.getPassword();
          String roles = userInfoEntity.getRoles();
- 
+
          // Extract authorities from roles (comma-separated)
          String[] roleArray = roles.split(",");
          GrantedAuthority[] authorities = Arrays.stream(roleArray)
                  .map(role -> (GrantedAuthority) role::trim)
                  .toArray(GrantedAuthority[]::new);
- 
+
          return new UsernamePasswordAuthenticationToken(username, password, Arrays.asList(authorities));
      }
+     
+     public AuthResponseDto registerUser(UserRegistrationDto userRegistrationDto,HttpServletResponse httpServletResponse){
+
+        try{
+            log.info("[AuthService:registerUser]User Registration Started with :::{}",userRegistrationDto);
+
+            Optional<UserInfo> user = userInfoRepo.findByEmailId(userRegistrationDto.userEmail());
+            if(user.isPresent()){
+                throw new Exception("User Already Exist");
+            }
+
+            UserInfo userDetailsEntity = userInfoMapper.convertToEntity(userRegistrationDto);
+            Authentication authentication = createAuthenticationObject(userDetailsEntity);
+
+
+            // Generate a JWT token
+            String accessToken = jwtTokenGenerator.generateAccessToken(authentication);
+            String refreshToken = jwtTokenGenerator.generateRefreshToken(authentication);
+
+            UserInfo savedUserDetails = userInfoRepo.save(userDetailsEntity);
+            saveUserRefreshToken(userDetailsEntity,refreshToken);
+            
+            creatRefreshTokenCookie(httpServletResponse,refreshToken);
+            
+            log.info("[AuthService:registerUser] User:{} Successfully registered",savedUserDetails.getUserName());
+            return   AuthResponseDto.builder()
+                    .accessToken(accessToken)
+                    .accessTokenExpiry(5 * 60)
+                    .userName(savedUserDetails.getUserName())
+                    .tokenType(TokenType.Bearer)
+                    .build();
+
+
+        }catch (Exception e){
+            log.error("[AuthService:registerUser]Exception while registering the user due to :"+e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+        }
+
+    }
      
  }
