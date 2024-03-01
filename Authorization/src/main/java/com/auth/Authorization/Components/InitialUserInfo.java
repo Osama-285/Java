@@ -10,11 +10,10 @@ import com.auth.Authorization.Model.UserInfo;
 import com.auth.Authorization.Repository.UserInfoRepo;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 
 @RequiredArgsConstructor
 @Component
-@Slf4j
 public class InitialUserInfo implements CommandLineRunner{
     private final UserInfoRepo userInfoRepo ;
     private final PasswordEncoder passwordEncoder ;
