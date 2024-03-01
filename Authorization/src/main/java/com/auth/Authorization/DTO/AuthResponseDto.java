@@ -1,6 +1,6 @@
 package com.auth.Authorization.DTO;
 
-import org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType;
+
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

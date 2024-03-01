@@ -17,7 +17,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class DashboardController {
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_ADMIN','ROLE_USER')")
+    // @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_ADMIN','ROLE_USER')")
+    @PreAuthorize("hasAuthority('SCOPE_READ')")
      @GetMapping("/welcome-message")
     public ResponseEntity<String> getFirstWelcomeMessage(Authentication authentication) {
         System.out.println("AUTHENTICATION"+authentication);
@@ -26,14 +27,16 @@ public class DashboardController {
     }
     
     
-    @PreAuthorize("hasRole('ROLE_MANAGER')")
+    // @PreAuthorize("hasRole('ROLE_MANAGER')")
+     @PreAuthorize("hasAuthority('SCOPE_READ')")
     @GetMapping("/manager-message")
     public ResponseEntity<String> getManagerData(Principal principal){
         return ResponseEntity.ok("Manager::"+principal.getName());
 
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // @PreAuthorize("hasRole('ROLE_ADMIN')")
+     @PreAuthorize("hasAuthority('SCOPE_WRITE')")
     @PostMapping("/admin-message")
     public ResponseEntity<String> getAdminData(@RequestParam("message") String message, Principal principal){
         return ResponseEntity.ok("Admin::"+principal.getName()+" has this message:"+message);
