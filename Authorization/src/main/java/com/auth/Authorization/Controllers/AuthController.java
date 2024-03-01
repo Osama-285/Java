@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.auth.Authorization.Service.AuthService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 
@@ -17,8 +18,8 @@ public class AuthController {
 
     private final AuthService authService;
     @PostMapping("/sign-in")
-    public ResponseEntity<?> authenticateUser(Authentication authentication){
+    public ResponseEntity<?> authenticateUser(Authentication authentication,HttpServletResponse response){
 
-        return ResponseEntity.ok(authService.getJwtTokensAfterAuthentication(authentication));
+        return ResponseEntity.ok(authService.getJwtTokensAfterAuthentication(authentication,response));
     }
 }

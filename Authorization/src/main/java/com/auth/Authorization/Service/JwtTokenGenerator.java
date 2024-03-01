@@ -52,7 +52,7 @@ import lombok.extern.slf4j.Slf4j;
  
      private String getPermissionsFromRoles(String roles) {
          Set<String> permissions = new HashSet<>();
- 
+
          if (roles.contains("ROLE_ADMIN")) {
              permissions.addAll(List.of("READ", "WRITE", "DELETE"));
          }
@@ -62,9 +62,24 @@ import lombok.extern.slf4j.Slf4j;
          if (roles.contains("ROLE_USER")) {
              permissions.add("READ");
          }
- 
+
          return String.join(" ", permissions);
      }
+     
+       public String generateRefreshToken(Authentication authentication) {
+
+     log.info("[JwtTokenGenerator:generateRefreshToken] Token Creation Started for:{}", authentication.getName());
+     
+     JwtClaimsSet claims = JwtClaimsSet.builder()
+             .issuer("atquil")
+             .issuedAt(Instant.now())
+             .expiresAt(Instant.now().plus(15 , ChronoUnit.DAYS))
+             .subject(authentication.getName())
+             .claim("scope", "REFRESH_TOKEN")
+             .build();
+
+     return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+ }
  
  }
 
