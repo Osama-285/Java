@@ -55,7 +55,8 @@ public class SecurityConfig {
 
      @Order(1)
      @Bean
-     public SecurityFilterChain signInSecurityFilterChain(HttpSecurity httpSecurity) throws Exception{
+     public SecurityFilterChain signInSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        System.out.println("USERINFORMATION"+httpSecurity+userInfoService);
          return httpSecurity
                  .securityMatcher(new AntPathRequestMatcher("/sign-in/**"))
                  .csrf(AbstractHttpConfigurer::disable)

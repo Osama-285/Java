@@ -37,15 +37,16 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter{
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        try{
+        try {
+            System.out.println("REQUEST  "+request+" RESPONSE  "+ response);
             log.info("[JwtAccessTokenFilter:doFilterInternal] :: Started ");
 
             log.info("[JwtAccessTokenFilter:doFilterInternal]Filtering the Http Request:{}",request.getRequestURI());
             
             final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-            
+             System.out.println("AUTHHEADERR  "+authHeader);
             JwtDecoder jwtDecoder =  NimbusJwtDecoder.withPublicKey(rsaKeyRecord.rsaPublicKey()).build();
-
+            System.out.println("JWTDECODER  "+jwtDecoder);
             if(!authHeader.startsWith(TokenType.Bearer.name())){
                 filterChain.doFilter(request,response);
                 return;
@@ -53,10 +54,10 @@ public class JwtAccessTokenFilter extends OncePerRequestFilter{
 
             final String token = authHeader.substring(7);
             final Jwt jwtToken = jwtDecoder.decode(token);
-
+            System.out.println("jwtToken  "+jwtToken);
 
             final String userName = jwtTokenUtils.getUserName(jwtToken);
-
+            System.out.println("userName  "+userName);
             if(!userName.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null){
                 
                 UserDetails userDetails = jwtTokenUtils.userDetails(userName);

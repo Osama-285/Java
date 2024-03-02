@@ -11,10 +11,10 @@ import com.auth.Authorization.Repository.RefreshTokenRepo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 
 @Service
-@Slf4j
+
 @RequiredArgsConstructor
 public class LogoutHandlerService implements LogoutHandler {
 
